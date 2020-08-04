@@ -2,7 +2,7 @@
 require_once '../../core/loader.php';
 
 if(!isset($_POST['email']) || !isset($_POST['password'])){
-     output(['status' => 'Error' , 'code' => 400 , 'msg' => 'لطفا تمامی فیلد ها را پر کنید']);
+     output(['status' => 'Error' , 'code' => 402 , 'msg' => 'لطفا تمامی فیلد ها را پر کنید']);
 }
  
 $email       = $_POST['email'];
@@ -10,7 +10,7 @@ $password    = $_POST['password'];
 
 $user = getUserByEmail($connection , $email);
 if(sizeOf($user) == 0){
-    output(['status' => 'failed' , 'code' => 400 , 'msg' => 'حسابی با این ایمیل یافت نشد']);
+    output(['status' => 'failed' , 'code' => 404 , 'msg' => 'حسابی با این ایمیل یافت نشد']);
 }
 
 if(password_verify($password , $user[0]['password'])){
@@ -21,7 +21,7 @@ if(password_verify($password , $user[0]['password'])){
         $shell->execute();
         $result = $shell->fetchAll(PDO::FETCH_ASSOC);
         if(!empty($result)){
-            output(['status' => 'success' , 'code' => 200 , 'msg' => 'خوش آمدید' , 'user' => $result]);
+            output(['status' => 'success' , 'code' => 200 , 'msg' => 'خوش آمدید' , 'user' => $result[0]]);
         } else {
             output(['status' => 'Error' , 'code' => 400, 'msg' => 'مشکلی در ورود به حساب شما رخ داده است!']);
         }
@@ -29,7 +29,7 @@ if(password_verify($password , $user[0]['password'])){
         ouput(['status' => 'Error' , 'code' => 400, 'msg' => 'مشکلی در ورود به حساب شما رخ داده است!']);
     }
 } else {
-    output(['status' => 'Error' , 'code' => 400, 'msg' => 'رمز عبور شما صحیح نیست']);
+    output(['status' => 'Error' , 'code' => 401, 'msg' => 'رمز عبور شما صحیح نیست']);
 }
 
 
