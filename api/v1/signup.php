@@ -1,28 +1,31 @@
 <?php 
 require_once '../../core/loader.php';
 
-if(!isset($_POST['name']) || !isset($_POST['family']) || !isset($_POST['email']) || !isset($_POST['phoneNumber']) ||
- !isset($_POST['password'])){
-     output(['status' => 'Error' , 'code' => 400 , 'msg' => 'لطفا تمامی فیلد ها را پر کنید']);
+
+$jsonRequest = file_get_contents('php://input');
+$params 	 = json_decode($jsonRequest , true);
+if(!isset($params['name']) || !isset($params['family']) || !isset($params['email']) || !isset($params['phoneNumber']) || !isset($params['password']) || !isset($params['gender'])){
+    output(['status' => 'Error' , 'code' => 400 , 'msg' => 'لطفا تمامی فیلد ها را پر کنید']);
 }
-
-$name        = $_POST['name'];
-$family      = $_POST['family'];
-$email       = $_POST['email'];
-$phoneNumber = $_POST['phoneNumber'];
-$password    = $_POST['password'];
-
-
+ 
+$name        = $params['name'];
+$family      = $params['family'];
+$email       = $params['email'];
+$phoneNumber = $params['phoneNumber'];
+$password    = $params['password'];
+$gender      = $params['gender'];
+ 
 if(getCountUserByEmail($connection , $email) >= 1) {
     output(['status' => 'failed' , 'code' => 400 , 'msg' => 'شما قبلا ثبت نام کرده اید!']);
 } else {
     $passwordHashed = password_hash($password , PASSWORD_DEFAULT);
-    $shell = $connection->prepare('INSERT INTO t_user (name , family , email , phone , password) VALUES (:name , :family , :email , :phoneNumber , :password)');
+    $shell = $connection->prepare('INSERT INTO t_user (name , family , email , phone , password , gender) VALUES (:name , :family , :email , :phoneNumber , :password , :gender)');
     $shell->bindParam(':name' , $name);
     $shell->bindParam(':family' , $family);
     $shell->bindParam(':email' , $email);
     $shell->bindParam(':phoneNumber' , $phoneNumber);
     $shell->bindParam(':password' , $passwordHashed);
+    $shell->bindParam(':gender' , $gender);
     try {
         $result = $shell->execute();
         if($result == 1){
