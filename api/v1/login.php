@@ -14,7 +14,7 @@ if(sizeOf($user) == 0){
 }
 
 if(password_verify($password , $user[0]['password'])){
-    $shell = $connection->prepare('SELECT userId , name , family , phone , image , phone , email , gender , role ,point FROM t_user WHERE email=:email');
+    $shell = $connection->prepare('SELECT userId , name , family , phone , image , phone , email , gender , role , point , token FROM t_user WHERE email=:email');
     $shell->bindParam(':email' , $email);
 
     try {

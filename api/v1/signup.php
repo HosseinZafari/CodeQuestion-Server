@@ -7,29 +7,32 @@ $params 	 = json_decode($jsonRequest , true);
 if(!isset($params['name']) || !isset($params['family']) || !isset($params['email']) || !isset($params['phoneNumber']) || !isset($params['password']) || !isset($params['gender'])){
     output(['status' => 'Error' , 'code' => 400 , 'msg' => 'لطفا تمامی فیلد ها را پر کنید']);
 }
- 
+
 $name        = $params['name'];
 $family      = $params['family'];
 $email       = $params['email'];
 $phoneNumber = $params['phoneNumber'];
 $password    = $params['password'];
 $gender      = $params['gender'];
- 
+$token = getToken($email);
+
+
 if(getCountUserByEmail($connection , $email) >= 1) {
     output(['status' => 'failed' , 'code' => 400 , 'msg' => 'شما قبلا ثبت نام کرده اید!']);
 } else {
     $passwordHashed = password_hash($password , PASSWORD_DEFAULT);
-    $shell = $connection->prepare('INSERT INTO t_user (name , family , email , phone , password , gender) VALUES (:name , :family , :email , :phoneNumber , :password , :gender)');
+    $shell = $connection->prepare('INSERT INTO t_user (name , family , email , phone , password , gender , token) VALUES (:name , :family , :email , :phoneNumber , :password , :gender , :token)');
     $shell->bindParam(':name' , $name);
     $shell->bindParam(':family' , $family);
     $shell->bindParam(':email' , $email);
     $shell->bindParam(':phoneNumber' , $phoneNumber);
     $shell->bindParam(':password' , $passwordHashed);
     $shell->bindParam(':gender' , $gender);
+    $shell->bindParam(':token' , $token);
     try {
         $result = $shell->execute();
         if($result == 1){
-            output(['status' => 'success' , 'code' => 200, 'msg' => 'شما با موفقیت ثبت نام شده اید']);
+            output(['status' => 'success' , 'code' => 200, 'msg' => 'شما با موفقیت ثبت نام شده اید', 'auth' => $token] );
         } else {
             output(['status' => 'Error' , 'code' => 400, 'msg' => 'مشکلی در ثبت نام شما رخ داده است!']);
         }
