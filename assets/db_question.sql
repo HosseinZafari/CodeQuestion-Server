@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Aug 12, 2020 at 11:05 AM
+-- Generation Time: Aug 20, 2020 at 02:21 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.5
 
@@ -110,15 +110,32 @@ CREATE TABLE IF NOT EXISTS `t_news` (
 DROP TABLE IF EXISTS `t_question`;
 CREATE TABLE IF NOT EXISTS `t_question` (
   `questionId` smallint(6) NOT NULL AUTO_INCREMENT,
-  `fromUserId` smallint(6) DEFAULT NULL,
-  `toUserId` smallint(6) DEFAULT NULL,
-  `title` varchar(200) COLLATE utf8_persian_ci DEFAULT NULL,
+  `fromUser` mediumint(9) DEFAULT NULL,
+  `toUser` mediumint(9) DEFAULT NULL,
+  `title` varchar(500) COLLATE utf8_persian_ci DEFAULT NULL,
   `text` text COLLATE utf8_persian_ci,
-  `type` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
-  `course` varchar(100) COLLATE utf8_persian_ci DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL,
+  `date` varchar(20) COLLATE utf8_persian_ci DEFAULT NULL,
+  `course` varchar(1000) COLLATE utf8_persian_ci DEFAULT NULL,
   PRIMARY KEY (`questionId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+
+--
+-- Dumping data for table `t_question`
+--
+
+INSERT INTO `t_question` (`questionId`, `fromUser`, `toUser`, `title`, `text`, `type`, `date`, `course`) VALUES
+(1, 28, NULL, 'this is a title', 'this is a text', 0, '۱۳۹۹/۰۵/۲۵ ۱۳:۴۷', 'آموزش دیجی کالا'),
+(2, 28, NULL, 'this is a title', 'this is a text', 0, '۱۳۹۹/۰۵/۲۵ ۱۳:۵۲', 'آموزش دیجی کالا'),
+(3, 28, NULL, 'this is a title', 'this is a text', 0, '۱۳۹۹/۰۵/۲۵ ۱۳:۵۲', 'آموزش دیجی کالا'),
+(4, 28, NULL, 'this is a title', 'this is a text', 0, '۱۳۹۹/۰۵/۲۵ ۱۳:۵۴', 'آموزش دیجی کالا'),
+(5, 31, NULL, 'ghgh', 'hghghghg', 1, '۱۳۹۹/۰۵/۲۷ ۱۱:۳۸', 'دوره حضوری برنامه نویسی اندروید با جاوا به صورت پروژه محور(اپلیکیشن دیجی کالا ورژن جدید)'),
+(6, 31, NULL, 'ghgh', 'hghghghg', 1, '۱۳۹۹/۰۵/۲۷ ۱۱:۳۸', 'دوره حضوری برنامه نویسی اندروید با جاوا به صورت پروژه محور(اپلیکیشن دیجی کالا ورژن جدید)'),
+(7, 31, NULL, 'fdfdfdf', 'dfdfdfdfdfdfdfd', 1, '۱۳۹۹/۰۵/۲۷ ۱۱:۳۹', 'آموزش ساخت اپلیکیشن اندروید دیجی کالا'),
+(8, 31, NULL, 'fdfdfdf', 'dfdfdfdfdfdfdfd', 1, '۱۳۹۹/۰۵/۲۷ ۱۱:۳۹', 'آموزش ساخت اپلیکیشن اندروید دیجی کالا'),
+(9, 31, -1, 'njnjnjn', 'njnjnjnj', 1, '۱۳۹۹/۰۵/۲۷ ۱۱:۴۳', 'دوره حضوری برنامه نویسی اندروید با جاوا به صورت پروژه محور(اپلیکیشن دیجی کالا ورژن جدید)'),
+(10, 28, -1, 'this is a titlerrrrrr', 'this is a text rrrrrr', 0, '۱۳۹۹/۰۵/۳۰ ۱۴:۳۱', 'آموزش دیجی کالاrr'),
+(11, -1, 28, 'این عنوان جواب مدیر است ', 'این هم متن جواب مدیر است ', 0, '۱۳۹۹/۰۵/۳ ۱۴:۳۱', 'آموزش دیجی کالا');
 
 -- --------------------------------------------------------
 
@@ -161,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `t_user` (
   `point` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`userId`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 --
 -- Dumping data for table `t_user`
@@ -172,13 +189,14 @@ INSERT INTO `t_user` (`userId`, `name`, `family`, `image`, `phone`, `email`, `pa
 (2, 'حسین', 'ظفری', NULL, '(+22) 87912', 'majordick@msn.com', NULL, 0, 'user', NULL, 40),
 (3, 'ساریانا', 'حیدری', 'https://ware.uncox.com/asset/profile/female/63.jpg', '(+22) 87985', 'hos@gmail.com', NULL, 1, 'user', NULL, 98),
 (4, 'hossein', 'zafari', NULL, '09035555127', 'hoos@gmail.com', '$2y$10$H9nVkpeQeLFjoOfCLvZe3eWN7z2JsKwMakmgAxGEo3AmB3KblbgCS', 0, 'user', NULL, NULL),
+(31, 'hossein ', 'mansori', NULL, '09111111112', 'hassan@gmail.com', '$2y$10$59N6h/v2cK6OZMz2c7qJaOGT5yQQLxdbfOavhOM1RCwLPFPKKAzpe', 0, 'user', '29f519f1edf18922243c3501386eec596861616e40676d313539373331313231392e38363431', NULL),
 (30, 'hossein ', 'mansori ', NULL, '09035482821', 'hz1112@gmail.com', '$2y$10$XF4aTUU.sAcwhfdUZOZcKu.PGvXIbYZkX/Gx44gU78mYE1D85jD0K', 0, 'user', '1ff8522bb020120c9ddfe57ef5979273687a313240676d313539363739323436312e39333836', NULL),
 (29, 'زهرا ', 'نعمتی ', NULL, '09035488888', 'zahra@gmail.com', '$2y$10$eUiib/y4FarTutcIav4kzuRUF4rciapwQmeEfgN0.FRsS7wEUIa3O', 0, 'user', 'cb1eb0004008f6ce15299d849d52cdf67a616140676d61313539363739313936392e38373739', NULL),
 (28, 'امید ', 'باقریان', NULL, '09035490665', 'bagher@gmail.com', '$2y$10$eX1eo/rbUL1I2Uqew/6ddO88xGHkYd4AajCh93dsf.B6dBpJOOd1W', 0, 'user', '4b210d828e57f40472e1972711f7b9b66261657240676d313539363739313733352e37333835', NULL),
 (27, 'hossein', 'zafari', NULL, '3343434', 'hosss@g.com', '$2y$10$KuPi8.tMvqPJHe2htRPqJuZXnkciqZVBhp9iUjJsAk58CHe3cyQDK', 0, 'user', '8b693ce5b21d5ea112877acc4653e895686f7340672e63313539363733353932302e35323735', NULL),
 (26, 'hossein', 'zafari', NULL, '3343434', 'ho@g.com', '$2y$10$ZIsRz62g4ZVL2p2hnL03tejdMV9887yJiuW.jEKlD/W7hNsfTHpoe', 0, 'user', 'e8e485efb14d06d84ad583738f0fda72686f313539363733353832392e33343539', NULL),
 (25, 'hossein ', 'zafari', NULL, '09035490726', 'hossdfdfein@f.gmail', '$2y$10$hwFaCC3/YlHVgBb/EdBvbuJ8prbOLmP1Maax0558S152.2JFjei1K', 1, 'user', NULL, NULL),
-(24, 'hossein ', 'zafari', NULL, '09035490726', 'hossein@f.gmail', '$2y$10$juJ1hv3D.9cysw44uN8p3umK/wEmCYMoogThJ2WZpFFvYzjfrc4fm', 0, 'user', NULL, NULL);
+(24, 'hossein ', 'zafari', NULL, '09035490726', 'hossein@f.gmail', '$2y$10$juJ1hv3D.9cysw44uN8p3umK/wEmCYMoogThJ2WZpFFvYzjfrc4fm', 0, 'admin', NULL, NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
