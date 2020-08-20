@@ -17,21 +17,28 @@ $typeAsk    = $_POST['type'];
 $typeCourse = $_POST['course'];
 $date  = jdate('o/m/d H:i');
 $token = $_SERVER['HTTP_TOKEN'];
-$toUserId = null ;
+$toUser = null ;
 
 try {
     global $connection;
-    $command = $connection->prepare('SELECT userId  FROM t_user WHERE token=:token');
+    $command = $connection->prepare('SELECT t_user.userId , t_user.role FROM t_user WHERE token=:token');
     $command->bindParam('token' , $token);
     $command->execute();
     $result = $command->fetchAll();
     if(count($result) < 1) {
-        output(['status' => 'Error' , 'code' => 404 , 'حساب شما صحیح نمیباشد']);
+        output(['status' => 'Error' , 'code' => 404 , 'msg' => 'حساب شما صحیح نمیباشد']);
     } else {
         $validUser = $result[0];
-        $command = $connection->prepare('INSERT INTO t_question (fromUserId  , toUserId ,title , text , type , date , course) VALUES (:fromUserId  , :toUserId , :title , :text , :type , :date , :course)');
-        $command->bindParam('fromUserId' , $validUser['userId']);
-        $command->bindParam('toUserId' , $toUserId); // TODO Must Add User Id 
+
+        if($validUser['role'] == 'user'){ // This is User
+            $toUser = -1; // -1 it's Admin  
+        } else { // This is Admin
+            // TODO 
+        }
+
+        $command = $connection->prepare('INSERT INTO t_question (fromUser  , toUser ,title , text , type , date , course) VALUES (:fromUser  , :toUser , :title , :text , :type , :date , :course)');
+        $command->bindParam('fromUser' , $validUser['userId']);
+        $command->bindParam('toUser' , $toUser);
         $command->bindParam('title' , $title);
         $command->bindParam('text'  , $text);
         $command->bindParam('type'  , $typeAsk);
