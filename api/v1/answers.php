@@ -20,7 +20,26 @@ try {
         $command->bindParam('fromUser' , $person['userId']);
         $command->bindParam('toUser' , $person['userId']);
         $command->execute();
-        $rows = $command->fetchAll();
+		
+		$rows = array();
+        foreach($command->fetchAll() as $oldRow){
+			$isAdmin = 0;
+			if($oldRow['fromUser'] == ADMIN){
+				$isAdmin = 1; // admin 
+			} else {
+				$isAdmin = 0; // user 
+			}
+			$newRow = array();
+			$newRow['isAdmin'] = $isAdmin;
+			$newRow['title'] = $oldRow['title'];
+			$newRow['text']  = $oldRow['text'];
+			$newRow['type']  = $oldRow['type'];
+			$newRow['course'] = $oldRow['course'];
+			$newRow['date']  = $oldRow['date'];
+			
+			$rows[] = $newRow;
+		}
+		
         output(['status' => 'Success' , 'code' => 200 , 'answers' => $rows]);
     }
 } catch(Exception $e){
