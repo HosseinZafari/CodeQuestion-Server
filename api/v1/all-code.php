@@ -1,0 +1,31 @@
+<?php 
+
+require_once '../../core/loader.php';
+
+if(!isset($_GET['category'])){
+    output(['status' => 'Error', 'code' => '400' , 'msg' => 'شما باید یک دسته بندی انتخاب کنید']);
+}
+
+$cate = $_GET['category'];
+
+global $connection;
+if($cate == POPULAR){ // Popular Codes
+    try {
+        $cmd = $connection->prepare('SELECT codeId , title , source , date  , point as codePoint FROM t_code ORDER BY t_code.point DESC');
+        $cmd->execute();
+        $rows = $cmd->fetchAll();
+        output(['status' => 'Success' , 'code' => 200 , 'codes' => $rows]);
+    } catch(Exception $e) {
+        output(['status' => 'Error' , 'code' => 500 , 'msg' => 'خطایی در سرور رخ داده لطفا بعدا امتحان کنید.']);
+    }
+    
+} else {
+    try {
+        $cmd = $connection->prepare('SELECT codeId , title , source , date  , point as codePoint FROM t_code ORDER BY t_code.date DESC');
+        $cmd->execute();
+        $rows = $cmd->fetchAll();
+        output(['status' => 'Success' , 'code' => 200 , 'codes' => $rows]);
+    } catch(Exception $e) {
+        output(['status' => 'Error' , 'code' => 500 , 'msg' => 'خطایی در سرور رخ داده لطفا بعدا امتحان کنید.']);
+    }
+}
