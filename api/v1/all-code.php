@@ -11,7 +11,7 @@ $cate = $_GET['category'];
 global $connection;
 if($cate == POPULAR){ // Popular Codes
     try {
-        $cmd = $connection->prepare('SELECT t_code.codeId , t_code.title , t_code.source , t_code.date  , t_code.point as codePoint , t_user.image , t_user.gender
+        $cmd = $connection->prepare('SELECT t_code.codeId , t_code.title , t_code.text ,t_code.source , t_code.date  , t_code.point as codePoint , t_user.image , t_user.gender
 		 FROM t_code JOIN t_user ON t_code.userId=t_user.userId ORDER BY t_code.point DESC');
         $cmd->execute();
         $rows = $cmd->fetchAll();
@@ -22,7 +22,8 @@ if($cate == POPULAR){ // Popular Codes
     
 } else {
     try {
-        $cmd = $connection->prepare('SELECT codeId , title , source , date  , point as codePoint FROM t_code ORDER BY t_code.date DESC');
+        $cmd = $connection->prepare('SELECT t_code.codeId , t_code.title , t_code.text , t_code.source , t_code.date  , t_code.point as codePoint , t_user.image , t_user.gender
+		 FROM t_code JOIN t_user ON t_code.userId=t_user.userId ORDER BY t_code.date DESC');
         $cmd->execute();
         $rows = $cmd->fetchAll();
         output(['status' => 'Success' , 'code' => 200 , 'codes' => $rows]);
