@@ -32,7 +32,16 @@ if(getCountUserByEmail($connection , $email) >= 1) {
     try {
         $result = $shell->execute();
         if($result == 1){
-            output(['status' => 'success' , 'code' => 200, 'msg' => 'شما با موفقیت ثبت نام شده اید', 'auth' => $token] );
+			// Create a User Object 
+			$user = new stdClass();
+			$user->name   = $name;
+			$user->family = $family;
+			$user->email = $email;
+			$user->gender = $gender;
+			$user->phoneNumber = $phoneNumber;
+			$user->token = $token;
+			
+            output(['status' => 'success' , 'code' => 200, 'msg' => 'شما با موفقیت ثبت نام شده اید' , 'user' => $user] );
         } else {
             output(['status' => 'Error' , 'code' => 400, 'msg' => 'مشکلی در ثبت نام شما رخ داده است!']);
         }
