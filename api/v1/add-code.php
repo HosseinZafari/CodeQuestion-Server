@@ -39,7 +39,7 @@ try {
     
 } catch(Exception $e) {
     echo $e;
-    output(['status' => 'Erroer' , 'code' => 500 , 'msg' => 'خطایی به وجود آمده بعدا امتحان کنید']);
+    output(['status' => 'Error' , 'code' => 500 , 'msg' => 'خطایی به وجود آمده بعدا امتحان کنید']);
 }
 
 

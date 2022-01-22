@@ -8,7 +8,7 @@ $user = $options['db']['user'];
 $pass = $options['db']['pass'];
 
 try {
-  $connection = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
+  $connection = new PDO("mysql:host=$host;dbname=$name", $user, $pass , array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
   $connection->setAttribute( PDO::ATTR_ERRMODE , PDO::ERRMODE_EXCEPTION);
   $exc = $connection->prepare("SET NAMES UTF8");
   $exc->execute();
